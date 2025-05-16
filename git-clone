@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# File containing the list of modules
+FILE="settings.gradle.kts"
+# Base repository URL
+BASE_URL="https://github.com/KeyJ148"
+
+# Get the list of modules
+modules=$(grep -Eo 'include\("([^"]+)"\)' "$FILE" | sed -E 's/include\("([^"]+)"\)/\1/')
+
+# Clone each module
+for module in $modules; do
+  echo "Cloning $module ..."
+  if [ -d "$module" ]; then
+    echo "Directory $module already exists, skipping."
+  else
+    git clone "$BASE_URL/$module.git"
+  fi
+done
